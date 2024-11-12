@@ -7,64 +7,72 @@
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Pilih Metode Pembayaran</h2>
-        <div class="payment-method">
-            <div id="qris-option" onclick="selectMethod('qris')">
-                <img src="https://img.icons8.com/color/48/000000/qr-code.png" alt="QRIS" />
-                QRIS
-            </div>
-            <div id="wallet-option" onclick="selectMethod('wallet')">
-                <img src="https://img.icons8.com/color/48/000000/wallet.png" alt="E-Wallet" />
-                E-Wallet
-            </div>
-            <div id="va-option" onclick="selectMethod('va')">
-                <img src="https://img.icons8.com/color/48/000000/bank.png" alt="Virtual Account" />
-                Virtual Account
-            </div>
+<div class="container">
+    <h2>Pilih Metode Pembayaran</h2>
+    <div class="payment-method">
+        <div id="qris-option" onclick="selectMethod('qris')">
+            <img src="https://img.icons8.com/color/48/000000/qr-code.png" alt="QRIS" />
+            QRIS
         </div>
-
-        <div class="credential-selection" id="credential-selection">
-            <label for="project-select">Pilih Proyek:</label>
-            <select id="project-select" style="width: 100%;">
-                <option value="">Loading...</option>
-            </select>
+        <div id="wallet-option" onclick="selectMethod('wallet')">
+            <img src="https://img.icons8.com/color/48/000000/wallet.png" alt="E-Wallet" />
+            E-Wallet
         </div>
-
-        <div class="input-amount" id="amount-input">
-            <label for="amount">Nominal (Amount):</label>
-            <input type="number" id="amount" placeholder="Masukkan nominal">
+        <div id="va-option" onclick="selectMethod('va')">
+            <img src="https://img.icons8.com/color/48/000000/bank.png" alt="Virtual Account" />
+            Virtual Account
         </div>
-
-        <div class="va-channel-selection" id="va-channel-selection">
-            <label for="va-channel">Pilih Bank untuk Virtual Account:</label>
-            <select id="va-channel" style="width: 100%;">
-                <option value="">Pilih Bank</option>
-                <option value="008">Mandiri</option>
-                <option value="014">BCA</option>
-                <option value="002">BRI</option>
-                <option value="009">BNI</option>
-                <option value="013">Permata</option>
-                <option value="011">Danamon</option>
-                <option value="022">CIMB</option>
-                <option value="153">Sahabat Sampoerna</option>
-            </select>
+        
+        <div id="check-api-option">
+            <!-- <img src="https://img.icons8.com/color/48/000000/api.png" alt="Check API" /> -->
+            <i class="fa-solid fa-paper-plane"></i>
+            <a href="rc.php" style="text-decoration:none">Resend Callback</a>
         </div>
-
-        <button class="generate-btn" id="generate-btn" onclick="generatePayment()">Generate</button>
-
-        <div id="loading">
-            <div class="spinner"></div>
-            <p>Loading...</p>
-        </div>
-
-        <div id="response"></div>
     </div>
+
+    <div class="credential-selection" id="credential-selection">
+        <label for="project-select">Pilih Proyek:</label>
+        <select id="project-select" style="width: 100%;">
+            <option value="">Loading...</option>
+        </select>
+    </div>
+
+    <div class="input-amount" id="amount-input">
+        <label for="amount">Nominal (Amount):</label>
+        <input type="number" id="amount" placeholder="Masukkan nominal">
+    </div>
+
+    <div class="va-channel-selection" id="va-channel-selection">
+        <label for="va-channel">Pilih Bank untuk Virtual Account:</label>
+        <select id="va-channel" style="width: 100%;">
+            <option value="">Pilih Bank</option>
+            <option value="008">Mandiri</option>
+            <option value="014">BCA</option>
+            <option value="002">BRI</option>
+            <option value="009">BNI</option>
+            <option value="013">Permata</option>
+            <option value="011">Danamon</option>
+            <option value="022">CIMB</option>
+            <option value="153">Sahabat Sampoerna</option>
+        </select>
+    </div>
+
+    <button class="generate-btn" id="generate-btn" onclick="generatePayment()">Generate</button>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <div id="response"></div>
+</div>
 
     <div class="popup" id="popup">
         <div id="popup-content"></div>

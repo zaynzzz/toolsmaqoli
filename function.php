@@ -149,7 +149,7 @@ function handleQrisResponse($response) {
 
         if ($imageBase64) {
             echo "<h3>QR Code:</h3>";
-            echo "<img src='$imageBase64' alt='QR Code' class='qris-image'>";
+            echo "<img src='$imageBase64' alt='QR Code' class='qris-image'>"; // Apply the qris-image class here
         } else {
             echo "<p style='color: red;'>Error: QR Code tidak tersedia.</p>";
         }

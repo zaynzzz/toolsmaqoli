@@ -1,6 +1,5 @@
 <?php
 // credentials.php
-
 return [
     "Test Project" => ["api_key" => "CE-8MJQMGPJZG98E0JO", "api_token" => "XrRS0mSPbSd6JMMNQPe0NJofVqG5njjd"],
 "Democrazy" => ["api_key" => "CE-8NNRQIBZHVHUYQDY", "api_token" => "1F3mRqjeqqY9JEjO6jSAlFkNSGCwNUTX"],
