@@ -31,6 +31,7 @@ function generateReference() {
  */
 function signhash($key, $body, $token) {
     $data = $key . json_encode($body);
+
     return hash_hmac('sha512', $data, $token);
 }
 
@@ -122,7 +123,9 @@ function createQris($amount, $expiryMinutes, $projectName) {
     }
 
     curl_close($ch);
+
     return $response; // Asumsikan respons adalah string JSON
+    
 }
 
 /**
@@ -132,7 +135,7 @@ function createQris($amount, $expiryMinutes, $projectName) {
  */
 function handleQrisResponse($response) {
     $responseData = json_decode($response, true);
-
+   
     if ($responseData === null) {
         echo "<p style='color: red;'>Error: Respons tidak valid dari API.</p>";
         return;
