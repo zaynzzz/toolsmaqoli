@@ -36,6 +36,13 @@
             <a href="rc.php" style="text-decoration:none">Resend Callback</a>
         </div>
     </div>
+    <div id="check-api-option">
+        <button>
+            <!-- <img src="https://img.icons8.com/color/48/000000/api.png" alt="Check API" /> -->
+            <i class="fa-solid fa-paper-plane"></i>
+            <a href="chat.php" style="text-decoration:none">Chatting</a>
+        </button>
+    </div>
 
     <div class="credential-selection" id="credential-selection">
         <label for="project-select">Pilih Proyek:</label>
