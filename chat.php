@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = trim($_POST['message']);
     if (!empty($message)) {
         $anon = "Anonymous";
-        $ip = $activeIP;  // Mendapatkan IP pengirim
+        $ip = $activeIP;
         $timestamp = date('Y-m-d H:i:s');
         $entry = "{$anon} ({$ip}) - {$timestamp} : {$message}" . PHP_EOL;
         file_put_contents($file, $entry, FILE_APPEND);
@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
 }
+
 
 // Baca semua pesan dari file
 $messages = file_exists($file) ? file($file, FILE_IGNORE_NEW_LINES) : [];
@@ -162,20 +163,14 @@ $emotes = [
     <div class="header">Anonymous Chat</div>
     <div class="chat-container">
     <div class="chat-box" id="chatBox">
-
-            <?php if (!empty($messages)): ?>
-                <?php foreach ($messages as $msg): ?>
-                    <?php 
-                        // Cek apakah pesan berasal dari pengirim aktif
-                        $isActive = strpos($msg, $activeIP) !== false;
-                        $class = $isActive ? 'active' : ''; 
-                    ?>
-                    <div class="message <?= $class ?>"><?= htmlspecialchars($msg) ?></div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No messages yet. Apa yang ada dipikiran anda?</p>
-            <?php endif; ?>
-        </div>
+        <?php if (!empty($messages)): ?>
+            <?php foreach ($messages as $msg): ?>
+                <div class="message"><?= htmlspecialchars($msg) ?></div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No messages yet. Apa yang ada di pikiran Anda?</p>
+        <?php endif; ?>
+    </div>
         <form method="POST" class="form-container">
             <input type="text" name="message" id="message" placeholder="Type your message..." required>
             <button type="button" onclick="toggleEmoteModal()">😊 Emote</button>
