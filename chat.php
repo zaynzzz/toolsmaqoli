@@ -201,32 +201,70 @@ $emotes = [
     });
 </script>
 <script>
-    // Fungsi untuk memastikan input tetap fokus
-    function focusMessageInput() {
-        const messageInput = document.getElementById('message');
-        messageInput.focus();
-    }
-
-    // Fokus otomatis pada input saat DOM selesai dimuat
-    document.addEventListener('DOMContentLoaded', focusMessageInput);
-
-    // Fokus kembali pada input saat modal ditutup
-    document.getElementById("emoteModal").addEventListener('click', function (event) {
-        if (event.target.tagName !== 'BUTTON') {
-            this.style.display = "none";
-            focusMessageInput();
+        // Fungsi untuk membuka modal emote di bawah tombol Send
+        function toggleEmoteModal() {
+            const modal = document.getElementById("emoteModal");
+            modal.style.display = (modal.style.display === "block") ? "none" : "block";
         }
-    });
 
-    // Ketika area chat diklik, tetap fokus ke input
-    document.querySelector('.chat-box').addEventListener('click', focusMessageInput);
+        // Fungsi untuk menambahkan emoji ke kolom input
+        function insertEmote(emote) {
+            const messageInput = document.getElementById('message');
+            messageInput.value += emote;
+            messageInput.focus();
+        }
 
-    // Fokus otomatis kembali setelah form dikirim
-    document.querySelector('form').addEventListener('submit', function () {
-        setTimeout(focusMessageInput, 100); // Beri jeda kecil untuk memastikan input kembali fokus
-    });
-</script>
+        // Fungsi untuk mengirim pesan melalui AJAX
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value.trim();
 
+            if (message) {
+                fetch('send_message.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'message': message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        messageInput.value = ''; // Clear input
+                        loadMessages(); // Load latest messages
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk memuat pesan dari server
+        function loadMessages() {
+            const chatBox = document.getElementById('chatBox');
+            fetch('update_messages.php')
+                .then(response => response.json())
+                .then(messages => {
+                    chatBox.innerHTML = '';
+                    messages.forEach(msg => {
+                        const div = document.createElement('div');
+                        div.classList.add('message');
+                        div.textContent = msg;
+                        chatBox.appendChild(div);
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll ke bawah otomatis
+                });
+        }
+
+        // Scroll ke bawah otomatis
+        function scrollToBottom() {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Memuat pesan baru setiap 2 detik
+        setInterval(loadMessages, 1000);
+
+        // Fokus otomatis pada input saat DOM selesai dimuat
+        document.addEventListener('DOMContentLoaded', scrollToBottom);
+    </script>
 
 </body>
 
