@@ -173,7 +173,7 @@ $emotes = [
                     <div class="message <?= $class ?>"><?= htmlspecialchars($msg) ?></div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No messages yet. Be the first to send one!</p>
+                <p>No messages yet. Apa yang ada dipikiran anda?</p>
             <?php endif; ?>
         </div>
         <form method="POST" class="form-container">
