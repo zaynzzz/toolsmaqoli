@@ -162,18 +162,12 @@ $emotes = [
 <body>
     <div class="header">Anonymous Chat</div>
     <div class="chat-container">
-    <div class="chat-box" id="chatBox">
-        <?php if (!empty($messages)): ?>
-            <?php foreach ($messages as $msg): ?>
-                <div class="message"><?= htmlspecialchars($msg) ?></div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>No messages yet. Apa yang ada di pikiran Anda?</p>
-        <?php endif; ?>
-    </div>
-        <form method="POST" class="form-container">
+        <div class="chat-box" id="chatBox">
+            <!-- Pesan akan dimuat secara otomatis -->
+        </div>
+        <form class="form-container" id="chatForm">
             <input type="text" name="message" id="message" placeholder="Type your message..." required>
-            <button type="button" onclick="toggleEmoteModal()">😊 Emote</button>
+            <button type="submit">Send</button>
         </form>
 
         <!-- Modal untuk Emote -->
@@ -185,42 +179,18 @@ $emotes = [
             </div>
         </div>
     </div>
+
     <script>
-    // Fungsi untuk scroll ke bawah
-    function scrollToBottom() {
-        const chatBox = document.getElementById('chatBox');
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // Scroll ke bawah setelah DOM selesai dimuat
-    document.addEventListener('DOMContentLoaded', scrollToBottom);
-
-    // Scroll ke bawah setelah form dikirim
-    document.querySelector('form').addEventListener('submit', function () {
-        setTimeout(scrollToBottom, 10); // Beri jeda kecil untuk memastikan pesan baru dimuat
-    });
-</script>
-<script>
-        // Fungsi untuk membuka modal emote di bawah tombol Send
-        function toggleEmoteModal() {
-            const modal = document.getElementById("emoteModal");
-            modal.style.display = (modal.style.display === "block") ? "none" : "block";
-        }
-
-        // Fungsi untuk menambahkan emoji ke kolom input
-        function insertEmote(emote) {
-            const messageInput = document.getElementById('message');
-            messageInput.value += emote;
-            messageInput.focus();
-        }
-
         // Fungsi untuk mengirim pesan melalui AJAX
-        function sendMessage() {
+        function sendMessage(event) {
+            event.preventDefault(); // Mencegah form submit biasa
+
             const messageInput = document.getElementById('message');
             const message = messageInput.value.trim();
 
             if (message) {
-                fetch('send_message.php', {
+                // Kirim pesan melalui fetch (AJAX)
+                fetch('', {
                     method: 'POST',
                     body: new URLSearchParams({
                         'message': message
@@ -229,8 +199,8 @@ $emotes = [
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        messageInput.value = ''; // Clear input
-                        loadMessages(); // Load latest messages
+                        messageInput.value = ''; // Clear input setelah pesan terkirim
+                        loadMessages(); // Muat pesan terbaru setelah mengirim
                     }
                 });
             }
@@ -239,33 +209,32 @@ $emotes = [
         // Fungsi untuk memuat pesan dari server
         function loadMessages() {
             const chatBox = document.getElementById('chatBox');
-            fetch('update_messages.php')
-                .then(response => response.json())
-                .then(messages => {
-                    chatBox.innerHTML = '';
+            fetch('messages.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const messages = data.split('\n');
+                    chatBox.innerHTML = ''; // Bersihkan chat box
                     messages.forEach(msg => {
-                        const div = document.createElement('div');
-                        div.classList.add('message');
-                        div.textContent = msg;
-                        chatBox.appendChild(div);
+                        if (msg) {
+                            const div = document.createElement('div');
+                            div.classList.add('message');
+                            div.textContent = msg;
+                            chatBox.appendChild(div);
+                        }
                     });
                     chatBox.scrollTop = chatBox.scrollHeight; // Scroll ke bawah otomatis
                 });
         }
 
-        // Scroll ke bawah otomatis
-        function scrollToBottom() {
-            const chatBox = document.getElementById('chatBox');
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // Memuat pesan baru setiap 2 detik
+        // Memuat pesan baru setiap 1 detik
         setInterval(loadMessages, 1000);
 
         // Fokus otomatis pada input saat DOM selesai dimuat
-        document.addEventListener('DOMContentLoaded', scrollToBottom);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMessages(); // Memuat pesan ketika halaman dimuat
+            const form = document.getElementById('chatForm');
+            form.addEventListener('submit', sendMessage); // Menggunakan AJAX untuk pengiriman pesan
+        });
     </script>
-
 </body>
-
 </html>
